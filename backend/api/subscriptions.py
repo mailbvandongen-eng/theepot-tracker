@@ -3,11 +3,14 @@
 import json
 import os
 from http.server import BaseHTTPRequestHandler
-import redis
+from upstash_redis import Redis
 
 def get_redis():
     """Maak Redis connectie."""
-    return redis.from_url(os.environ.get('REDIS_URL', ''))
+    return Redis(
+        url=os.environ.get('UPSTASH_REDIS_REST_URL', ''),
+        token=os.environ.get('UPSTASH_REDIS_REST_TOKEN', '')
+    )
 
 class handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
@@ -23,12 +26,13 @@ class handler(BaseHTTPRequestHandler):
             raw_subs = r.hgetall('subscriptions')
 
             subscriptions = []
-            for key, value in raw_subs.items():
-                try:
-                    sub = json.loads(value)
-                    subscriptions.append(sub)
-                except json.JSONDecodeError:
-                    continue
+            if raw_subs:
+                for key, value in raw_subs.items():
+                    try:
+                        sub = json.loads(value) if isinstance(value, str) else value
+                        subscriptions.append(sub)
+                    except (json.JSONDecodeError, TypeError):
+                        continue
 
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')

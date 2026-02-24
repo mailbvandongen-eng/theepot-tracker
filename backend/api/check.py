@@ -5,17 +5,20 @@ import os
 import urllib.parse
 from http.server import BaseHTTPRequestHandler
 
-import redis
 import requests
 import resend
 from bs4 import BeautifulSoup
+from upstash_redis import Redis
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 
 
 def get_redis():
     """Maak Redis connectie."""
-    return redis.from_url(os.environ.get('REDIS_URL', ''))
+    return Redis(
+        url=os.environ.get('UPSTASH_REDIS_REST_URL', ''),
+        token=os.environ.get('UPSTASH_REDIS_REST_TOKEN', '')
+    )
 
 
 def scrape_marktplaats(term: str) -> list:
@@ -41,7 +44,7 @@ def scrape_marktplaats(term: str) -> list:
         if not listings:
             listings = soup.find_all("article", {"data-testid": "listing"})
 
-        for listing in listings[:10]:  # Max 10 per check
+        for listing in listings[:10]:
             try:
                 title_elem = (
                     listing.find("h3", class_="hz-Listing-title") or
@@ -106,7 +109,7 @@ def scrape_vinted(term: str) -> list:
         if not items:
             items = soup.find_all("div", class_="feed-grid__item")
 
-        for item in items[:10]:  # Max 10 per check
+        for item in items[:10]:
             try:
                 title_elem = (
                     item.find("h2") or
@@ -183,9 +186,8 @@ def is_seen(r, ad_id: str) -> bool:
 def mark_seen(r, ad_id: str):
     """Markeer advertentie als gezien."""
     r.sadd('seen_ads', ad_id)
-    # Houd max 10000 IDs bij om geheugen te besparen
+    # Houd max 10000 IDs bij
     if r.scard('seen_ads') > 10000:
-        # Verwijder random oudere items
         r.spop('seen_ads', 1000)
 
 
@@ -200,33 +202,32 @@ class handler(BaseHTTPRequestHandler):
             new_ads_count = 0
             emails_sent = 0
 
-            for key, value in raw_subs.items():
-                try:
-                    sub = json.loads(value)
-                    term = sub.get('term', '')
-                    email = sub.get('email', '')
-                    sites = sub.get('sites', [])
+            if raw_subs:
+                for key, value in raw_subs.items():
+                    try:
+                        sub = json.loads(value) if isinstance(value, str) else value
+                        term = sub.get('term', '')
+                        email = sub.get('email', '')
+                        sites = sub.get('sites', [])
 
-                    all_ads = []
+                        all_ads = []
 
-                    if 'marktplaats' in sites:
-                        all_ads.extend(scrape_marktplaats(term))
+                        if 'marktplaats' in sites:
+                            all_ads.extend(scrape_marktplaats(term))
 
-                    if 'vinted' in sites:
-                        all_ads.extend(scrape_vinted(term))
+                        if 'vinted' in sites:
+                            all_ads.extend(scrape_vinted(term))
 
-                    # Check nieuwe advertenties
-                    for ad in all_ads:
-                        if not is_seen(r, ad['id']):
-                            mark_seen(r, ad['id'])
-                            new_ads_count += 1
+                        for ad in all_ads:
+                            if not is_seen(r, ad['id']):
+                                mark_seen(r, ad['id'])
+                                new_ads_count += 1
 
-                            # Stuur email
-                            if send_email(email, term, ad):
-                                emails_sent += 1
+                                if send_email(email, term, ad):
+                                    emails_sent += 1
 
-                except Exception:
-                    continue
+                    except Exception:
+                        continue
 
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')

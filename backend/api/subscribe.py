@@ -4,11 +4,14 @@ import json
 import os
 import uuid
 from http.server import BaseHTTPRequestHandler
-import redis
+from upstash_redis import Redis
 
 def get_redis():
     """Maak Redis connectie."""
-    return redis.from_url(os.environ.get('REDIS_URL', ''))
+    return Redis(
+        url=os.environ.get('UPSTASH_REDIS_REST_URL', ''),
+        token=os.environ.get('UPSTASH_REDIS_REST_TOKEN', '')
+    )
 
 class handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
