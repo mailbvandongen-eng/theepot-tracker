@@ -14,7 +14,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(135deg, #0d0d1a 0%, #0f1624 100%);
             min-height: 100vh;
             color: #fff;
         }
@@ -86,11 +86,12 @@
 
         /* Cards */
         .card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 16px;
             padding: 24px;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         .card-header {
@@ -108,6 +109,56 @@
             font-weight: 600;
         }
 
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .stat-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat-item i {
+            width: 16px;
+            height: 16px;
+            color: #666;
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .stat-highlight {
+            background: rgba(76, 175, 80, 0.1);
+            border-color: rgba(76, 175, 80, 0.2);
+        }
+
+        .stat-highlight i {
+            color: #4caf50;
+        }
+
+        .stat-highlight .stat-value {
+            color: #4caf50;
+        }
+
         /* Search Panel */
         .search-panel {
             display: flex;
@@ -123,7 +174,7 @@
 
         .search-input-wrapper {
             position: relative;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .search-input {
@@ -132,16 +183,22 @@
             padding-right: 50px;
             border: 2px solid rgba(79, 195, 247, 0.3);
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             color: #fff;
             font-size: 1.1rem;
             transition: all 0.3s;
         }
 
+        .search-input:hover:not(:focus) {
+            border-color: rgba(79, 195, 247, 0.5);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
         .search-input:focus {
             outline: none;
             border-color: #4fc3f7;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(79, 195, 247, 0.05);
+            box-shadow: inset 0 0 0 1px rgba(79, 195, 247, 0.3), 0 0 20px rgba(79, 195, 247, 0.15);
         }
 
         .search-input::placeholder {
@@ -158,57 +215,60 @@
             height: 22px;
         }
 
-        /* Site Selector */
-        .site-selector {
-            margin-bottom: 20px;
+        /* Search Options (compact row) */
+        .search-options {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
         }
 
-        .site-selector-toggle {
+        .option-btn {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 16px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
+            gap: 6px;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            color: #888;
+            font-size: 0.85rem;
             cursor: pointer;
-            color: #a0a0a0;
-            font-size: 0.9rem;
             transition: all 0.2s;
-            width: 100%;
-            text-align: left;
         }
 
-        .site-selector-toggle:hover {
-            background: rgba(255,255,255,0.08);
+        .option-btn:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.12);
+            color: #aaa;
         }
 
-        .site-selector-toggle .count {
+        .option-btn.active {
+            background: rgba(79, 195, 247, 0.1);
+            border-color: rgba(79, 195, 247, 0.3);
             color: #4fc3f7;
-            font-weight: 600;
         }
 
-        .site-selector-toggle .toggle-icon {
-            width: 16px;
-            height: 16px;
+        .option-btn i {
+            width: 14px;
+            height: 14px;
         }
 
-        .site-selector-toggle .arrow {
-            margin-left: auto;
-            width: 18px;
-            height: 18px;
+        .option-btn .arrow {
+            width: 12px;
+            height: 12px;
             transition: transform 0.2s;
         }
 
-        .site-selector-toggle.open .arrow {
+        .option-btn.active .arrow {
             transform: rotate(180deg);
         }
 
+        /* Site Options Dropdown */
         .site-options {
             display: none;
             flex-wrap: wrap;
             gap: 8px;
-            margin-top: 12px;
+            margin-bottom: 16px;
             padding: 16px;
             background: rgba(0,0,0,0.2);
             border-radius: 10px;
@@ -216,6 +276,25 @@
 
         .site-options.show {
             display: flex;
+        }
+
+        /* Filter Options Dropdown */
+        .filter-options {
+            display: none;
+            margin-bottom: 16px;
+            padding: 16px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        .filter-options.show {
+            display: block;
+        }
+
+        .filter-placeholder {
+            color: #666;
+            font-size: 0.85rem;
+            font-style: italic;
         }
 
         .site-option {
@@ -294,46 +373,102 @@
             border-color: #4fc3f7;
         }
 
-        /* Search Results */
-        .search-results {
+        /* Results Section */
+        .results-section {
+            margin-top: 24px;
             padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255,255,255,0.06);
         }
 
-        .results-label {
-            font-size: 0.85rem;
-            color: #888;
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #666;
             margin-bottom: 12px;
         }
 
-        .results-links {
+        .section-header i {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* History List */
+        .history-list {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
         }
 
-        .result-link {
-            display: inline-flex;
+        .history-item {
+            display: flex;
             align-items: center;
             gap: 6px;
-            padding: 10px 16px;
-            background: rgba(79, 195, 247, 0.15);
-            color: #4fc3f7;
-            border: 1px solid rgba(79, 195, 247, 0.3);
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.9rem;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 6px;
+            color: #888;
+            font-size: 0.85rem;
+            cursor: pointer;
             transition: all 0.2s;
         }
 
-        .result-link:hover {
-            background: rgba(79, 195, 247, 0.3);
-            transform: translateY(-1px);
+        .history-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
         }
 
-        .result-link i {
-            width: 14px;
-            height: 14px;
+        .history-item i {
+            width: 12px;
+            height: 12px;
+        }
+
+        .history-empty {
+            color: #555;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        /* Results Grid */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        .result-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 12px;
+            background: rgba(79, 195, 247, 0.08);
+            border: 1px solid rgba(79, 195, 247, 0.2);
+            border-radius: 10px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.2s;
+        }
+
+        .result-card:hover {
+            background: rgba(79, 195, 247, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 195, 247, 0.2);
+        }
+
+        .result-card i {
+            width: 20px;
+            height: 20px;
+            color: #4fc3f7;
+        }
+
+        .result-card span {
+            font-size: 0.85rem;
+            font-weight: 500;
         }
 
         /* Monitors Panel */
@@ -479,15 +614,23 @@
             padding: 14px 16px;
             border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             color: #fff;
             font-size: 1rem;
             margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .modal-input:hover:not(:focus) {
+            border-color: rgba(79, 195, 247, 0.3);
+            background: rgba(255, 255, 255, 0.04);
         }
 
         .modal-input:focus {
             outline: none;
             border-color: #4fc3f7;
+            background: rgba(79, 195, 247, 0.05);
+            box-shadow: inset 0 0 0 1px rgba(79, 195, 247, 0.3), 0 0 20px rgba(79, 195, 247, 0.15);
         }
 
         .modal-buttons {
@@ -544,7 +687,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(135deg, #0d0d1a 0%, #0f1624 100%);
             z-index: 9999;
             justify-content: center;
             align-items: center;
@@ -581,15 +724,23 @@
             padding: 14px 16px;
             border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             color: #fff;
             font-size: 1rem;
             margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+
+        .password-box input:hover:not(:focus) {
+            border-color: rgba(79, 195, 247, 0.3);
+            background: rgba(255, 255, 255, 0.04);
         }
 
         .password-box input:focus {
             outline: none;
             border-color: #4fc3f7;
+            background: rgba(79, 195, 247, 0.05);
+            box-shadow: inset 0 0 0 1px rgba(79, 195, 247, 0.3), 0 0 20px rgba(79, 195, 247, 0.15);
         }
 
         .password-error {
@@ -604,12 +755,29 @@
                 padding: 16px;
             }
 
+            .stats-bar {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .stat-item {
+                padding: 10px 14px;
+            }
+
             .search-label {
                 font-size: 1.2rem;
             }
 
+            .search-options {
+                flex-wrap: wrap;
+            }
+
             .action-buttons {
                 flex-direction: column;
+            }
+
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .monitors-panel {
@@ -649,6 +817,25 @@
         <main class="dashboard">
             <!-- Search Panel -->
             <section class="card search-panel">
+                <!-- Stats Bar -->
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <i data-lucide="eye"></i>
+                        <span class="stat-value" id="stat-monitors">0</span>
+                        <span class="stat-label">monitors</span>
+                    </div>
+                    <div class="stat-item">
+                        <i data-lucide="refresh-cw"></i>
+                        <span class="stat-value" id="stat-checks">-</span>
+                        <span class="stat-label">checks vandaag</span>
+                    </div>
+                    <div class="stat-item stat-highlight" id="stat-matches-container" style="display: none;">
+                        <i data-lucide="sparkles"></i>
+                        <span class="stat-value" id="stat-matches">0</span>
+                        <span class="stat-label">nieuwe matches</span>
+                    </div>
+                </div>
+
                 <label class="search-label">Wat zoek je?</label>
 
                 <div class="search-input-wrapper">
@@ -656,14 +843,21 @@
                     <i data-lucide="search" class="search-icon"></i>
                 </div>
 
-                <!-- Site Selector -->
-                <div class="site-selector">
-                    <button class="site-selector-toggle" onclick="toggleSiteSelector()">
-                        <i data-lucide="map-pin" class="toggle-icon"></i>
-                        <span><span class="count" id="site-count">7</span> sites geselecteerd</span>
+                <!-- Search Options (compact) -->
+                <div class="search-options">
+                    <button class="option-btn" id="sites-btn" onclick="toggleSiteSelector()">
+                        <i data-lucide="globe"></i>
+                        <span><span id="site-count">7</span> sites</span>
                         <i data-lucide="chevron-down" class="arrow"></i>
                     </button>
-                    <div class="site-options" id="site-options">
+                    <button class="option-btn" id="filters-btn" onclick="toggleFilters()">
+                        <i data-lucide="sliders-horizontal"></i>
+                        <span>Filters</span>
+                    </button>
+                </div>
+
+                <!-- Site Options Dropdown -->
+                <div class="site-options" id="site-options">
                         <label class="site-option selected">
                             <input type="checkbox" value="marktplaats" checked>
                             Marktplaats
@@ -693,6 +887,10 @@
                             Koopplein
                         </label>
                     </div>
+
+                <!-- Filter Options Dropdown -->
+                <div class="filter-options" id="filter-options">
+                    <p class="filter-placeholder">Filters komen binnenkort...</p>
                 </div>
 
                 <!-- Action Buttons -->
@@ -707,10 +905,27 @@
                     </button>
                 </div>
 
-                <!-- Search Results -->
-                <div class="search-results" id="search-results" style="display: none;">
-                    <p class="results-label" id="results-label"></p>
-                    <div class="results-links" id="results-links"></div>
+                <!-- Results Section -->
+                <div class="results-section" id="results-section">
+                    <!-- History State -->
+                    <div id="results-history">
+                        <div class="section-header">
+                            <i data-lucide="clock"></i>
+                            <span>Recente zoekopdrachten</span>
+                        </div>
+                        <div class="history-list" id="history-list">
+                            <p class="history-empty">Nog geen zoekopdrachten</p>
+                        </div>
+                    </div>
+
+                    <!-- Live Results State -->
+                    <div id="results-live" style="display: none;">
+                        <div class="section-header">
+                            <i data-lucide="external-link"></i>
+                            <span>Zoekresultaten voor "<span id="results-term"></span>"</span>
+                        </div>
+                        <div class="results-grid" id="results-grid"></div>
+                    </div>
                 </div>
             </section>
 
@@ -782,6 +997,7 @@
                 document.getElementById('password-overlay').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
                 loadMonitors();
+                renderHistory();
             } else {
                 document.getElementById('password-error').style.display = 'block';
                 document.getElementById('password-input').value = '';
@@ -797,6 +1013,7 @@
         if (localStorage.getItem('theepot-auth') === 'true') {
             document.getElementById('main-app').style.display = 'block';
             loadMonitors();
+            renderHistory();
         } else {
             document.getElementById('password-overlay').style.display = 'flex';
         }
@@ -804,9 +1021,31 @@
         // Site Selector
         function toggleSiteSelector() {
             const options = document.getElementById('site-options');
-            const toggle = document.querySelector('.site-selector-toggle');
+            const btn = document.getElementById('sites-btn');
+            const filterOptions = document.getElementById('filter-options');
+            const filterBtn = document.getElementById('filters-btn');
+
+            // Close filters if open
+            filterOptions.classList.remove('show');
+            filterBtn.classList.remove('active');
+
             options.classList.toggle('show');
-            toggle.classList.toggle('open');
+            btn.classList.toggle('active');
+        }
+
+        // Filters Toggle
+        function toggleFilters() {
+            const options = document.getElementById('filter-options');
+            const btn = document.getElementById('filters-btn');
+            const siteOptions = document.getElementById('site-options');
+            const siteBtn = document.getElementById('sites-btn');
+
+            // Close sites if open
+            siteOptions.classList.remove('show');
+            siteBtn.classList.remove('active');
+
+            options.classList.toggle('show');
+            btn.classList.toggle('active');
         }
 
         // Site option click handlers
@@ -828,6 +1067,41 @@
             return Array.from(document.querySelectorAll('.site-option input:checked')).map(cb => cb.value);
         }
 
+        // Search History
+        const MAX_HISTORY = 5;
+
+        function addToHistory(term) {
+            let history = JSON.parse(localStorage.getItem('search-history') || '[]');
+            history = history.filter(t => t !== term);
+            history.unshift(term);
+            history = history.slice(0, MAX_HISTORY);
+            localStorage.setItem('search-history', JSON.stringify(history));
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const history = JSON.parse(localStorage.getItem('search-history') || '[]');
+            const container = document.getElementById('history-list');
+
+            if (history.length === 0) {
+                container.innerHTML = '<p class="history-empty">Nog geen zoekopdrachten</p>';
+                return;
+            }
+
+            container.innerHTML = history.map(term => `
+                <button class="history-item" onclick="searchFromHistory('${escapeHtml(term).replace(/'/g, "\\'")}')">
+                    <i data-lucide="search"></i>
+                    ${escapeHtml(term)}
+                </button>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function searchFromHistory(term) {
+            document.getElementById('search-term').value = term;
+            searchNow();
+        }
+
         // Search Now
         function searchNow() {
             const term = document.getElementById('search-term').value.trim();
@@ -842,14 +1116,23 @@
                 return;
             }
 
-            // Generate links
-            const linksHtml = sites.map(site =>
-                `<a href="${siteUrls[site](term)}" target="_blank" class="result-link">${siteNames[site]} <i data-lucide="external-link"></i></a>`
+            // Add to history
+            addToHistory(term);
+
+            // Generate cards
+            const cardsHtml = sites.map(site =>
+                `<a href="${siteUrls[site](term)}" target="_blank" class="result-card">
+                    <i data-lucide="external-link"></i>
+                    <span>${siteNames[site]}</span>
+                </a>`
             ).join('');
 
-            document.getElementById('results-label').textContent = `Zoekresultaten voor "${term}":`;
-            document.getElementById('results-links').innerHTML = linksHtml;
-            document.getElementById('search-results').style.display = 'block';
+            document.getElementById('results-term').textContent = term;
+            document.getElementById('results-grid').innerHTML = cardsHtml;
+
+            // Show results, hide history
+            document.getElementById('results-history').style.display = 'none';
+            document.getElementById('results-live').style.display = 'block';
             lucide.createIcons();
         }
 
@@ -901,7 +1184,9 @@
                     showToast('Monitor gestart!', 'success');
                     closeMonitorModal();
                     document.getElementById('search-term').value = '';
-                    document.getElementById('search-results').style.display = 'none';
+                    // Reset results display
+                    document.getElementById('results-history').style.display = 'block';
+                    document.getElementById('results-live').style.display = 'none';
                     loadMonitors();
                 } else {
                     const data = await response.json();
@@ -920,6 +1205,12 @@
                 const response = await fetch(`${API_URL}/api/subscriptions`);
                 const data = await response.json();
 
+                const count = data.subscriptions ? data.subscriptions.length : 0;
+
+                // Update stats bar
+                document.getElementById('stat-monitors').textContent = count;
+                document.getElementById('monitor-count').textContent = count;
+
                 if (!data.subscriptions || data.subscriptions.length === 0) {
                     container.innerHTML = `
                         <div class="empty-state">
@@ -927,12 +1218,9 @@
                             <p>Nog geen monitors actief.<br>Gebruik "Monitor instellen" om te beginnen.</p>
                         </div>
                     `;
-                    document.getElementById('monitor-count').textContent = '0';
                     lucide.createIcons();
                     return;
                 }
-
-                document.getElementById('monitor-count').textContent = data.subscriptions.length;
 
                 container.innerHTML = data.subscriptions.map(sub => `
                     <div class="monitor-item">
