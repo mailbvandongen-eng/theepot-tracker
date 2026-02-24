@@ -332,6 +332,7 @@
                 </div>
             </div>
             <button type="button" class="btn-primary" onclick="searchNow()">Zoek nu</button>
+            <div id="search-results" style="margin-top: 20px;"></div>
         </div>
 
         <div class="card">
@@ -442,6 +443,16 @@
 
             const encodedTerm = encodeURIComponent(term);
 
+            const siteNames = {
+                marktplaats: 'Marktplaats',
+                vinted: 'Vinted',
+                rataplan: 'RataPlan',
+                '2dehands': '2dehands.be',
+                ebay: 'eBay.nl',
+                speurders: 'Speurders',
+                koopplein: 'Koopplein'
+            };
+
             const urls = {
                 marktplaats: `https://www.marktplaats.nl/q/${encodedTerm}/`,
                 vinted: `https://www.vinted.nl/catalog?search_text=${encodedTerm}`,
@@ -452,11 +463,29 @@
                 koopplein: `https://www.koopplein.nl/heel-nederland/zoekopdracht?q=${encodedTerm}`
             };
 
-            sites.forEach(site => {
+            // Genereer links
+            const linksHtml = sites.map(site => {
                 if (urls[site]) {
-                    window.open(urls[site], '_blank');
+                    return `<a href="${urls[site]}" target="_blank" style="
+                        display: inline-block;
+                        background: rgba(79, 195, 247, 0.2);
+                        color: #4fc3f7;
+                        padding: 10px 16px;
+                        border-radius: 8px;
+                        text-decoration: none;
+                        margin: 4px;
+                        border: 1px solid rgba(79, 195, 247, 0.3);
+                        transition: background 0.2s;
+                    " onmouseover="this.style.background='rgba(79, 195, 247, 0.4)'"
+                       onmouseout="this.style.background='rgba(79, 195, 247, 0.2)'">${siteNames[site]}</a>`;
                 }
-            });
+                return '';
+            }).join('');
+
+            document.getElementById('search-results').innerHTML = `
+                <p style="color: #a0a0a0; margin-bottom: 10px; font-size: 0.9rem;">Zoekresultaten voor "${term}":</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 4px;">${linksHtml}</div>
+            `;
         }
 
         // Toon bericht
