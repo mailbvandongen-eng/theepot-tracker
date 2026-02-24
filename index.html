@@ -15,9 +15,14 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background:
-                radial-gradient(ellipse at 20% 20%, rgba(79, 195, 247, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(156, 39, 176, 0.1) 0%, transparent 50%),
-                linear-gradient(135deg, #0a0a14 0%, #0d1220 100%);
+                /* Primaire lichtbron - linksboven achter search card */
+                radial-gradient(ellipse 600px 400px at 25% 15%, rgba(56, 189, 248, 0.12) 0%, transparent 70%),
+                /* Secundaire lichtbron - rechtsboven achter monitors */
+                radial-gradient(ellipse 400px 300px at 75% 20%, rgba(34, 211, 238, 0.06) 0%, transparent 60%),
+                /* Accent lichtbron - onderaan midden */
+                radial-gradient(ellipse 500px 250px at 50% 90%, rgba(139, 92, 246, 0.05) 0%, transparent 70%),
+                /* Basis gradient - zeer donker */
+                linear-gradient(180deg, #06080d 0%, #0a0e18 50%, #080b12 100%);
             min-height: 100vh;
             color: #fff;
         }
@@ -87,19 +92,70 @@
             }
         }
 
-        /* Cards - Glassmorphism */
+        /* Cards - Premium Glassmorphism */
         .card {
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
             padding: 24px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid transparent;
             box-shadow:
-                0 8px 32px rgba(0, 0, 0, 0.4),
-                0 2px 8px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+                0 0 40px -10px rgba(56, 189, 248, 0.15),
+                0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                0 8px 16px -4px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Gradient border via pseudo-element */
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 1px;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                rgba(255, 255, 255, 0.05) 50%,
+                rgba(255, 255, 255, 0.02) 100%
+            );
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+            mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        /* Inner highlight - bovenrand */
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 1px;
+            left: 20px;
+            right: 20px;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 100%
+            );
+            pointer-events: none;
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            box-shadow:
+                0 0 50px -8px rgba(56, 189, 248, 0.2),
+                0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                0 8px 16px -4px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
         }
 
         .card-header {
@@ -117,35 +173,53 @@
             font-weight: 600;
         }
 
-        /* Stats Bar */
+        /* Stats Bar - Premium */
         .stats-bar {
             display: flex;
-            gap: 8px;
+            gap: 1px;
             margin-bottom: 24px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 4px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .stat-item {
             flex: 1;
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 16px;
-            background: rgba(255,255,255,0.04);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            gap: 10px;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.02);
             border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.08);
-            box-shadow:
-                0 2px 8px rgba(0, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        /* Glow divider tussen items */
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -1px;
+            top: 20%;
+            height: 60%;
+            width: 1px;
+            background: linear-gradient(
+                180deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 100%
+            );
+        }
+
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.04);
         }
 
         .stat-item i {
             width: 16px;
             height: 16px;
-            color: #666;
+            color: #555;
         }
 
         .stat-value {
@@ -156,20 +230,34 @@
 
         .stat-label {
             font-size: 0.75rem;
-            color: #666;
+            color: #555;
         }
 
         .stat-highlight {
-            background: rgba(76, 175, 80, 0.1);
-            border-color: rgba(76, 175, 80, 0.2);
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+        }
+
+        .stat-highlight::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 10px;
+            background: linear-gradient(
+                135deg,
+                rgba(34, 197, 94, 0.2) 0%,
+                transparent 50%
+            );
+            opacity: 0.5;
+            pointer-events: none;
         }
 
         .stat-highlight i {
-            color: #4caf50;
+            color: #22c55e;
         }
 
         .stat-highlight .stat-value {
-            color: #4caf50;
+            color: #22c55e;
         }
 
         /* Search Panel */
@@ -194,27 +282,27 @@
             width: 100%;
             padding: 18px 20px;
             padding-right: 50px;
-            border: 2px solid rgba(79, 195, 247, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(0, 0, 0, 0.2);
             color: #fff;
             font-size: 1.1rem;
-            transition: all 0.3s;
+            transition: all 0.2s ease;
         }
 
         .search-input:hover:not(:focus) {
-            border-color: rgba(79, 195, 247, 0.5);
-            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.12);
+            background: rgba(0, 0, 0, 0.25);
         }
 
         .search-input:focus {
             outline: none;
-            border-color: #4fc3f7;
-            background: rgba(79, 195, 247, 0.05);
+            border-color: rgba(56, 189, 248, 0.5);
+            background: rgba(0, 0, 0, 0.3);
             box-shadow:
-                0 0 0 3px rgba(79, 195, 247, 0.2),
-                0 0 20px rgba(79, 195, 247, 0.15),
-                inset 0 1px 2px rgba(0, 0, 0, 0.1);
+                0 0 0 4px rgba(56, 189, 248, 0.1),
+                0 0 20px rgba(56, 189, 248, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .search-input::placeholder {
@@ -339,8 +427,10 @@
         }
 
         .price-input-wrapper:focus-within {
-            border-color: #4fc3f7;
-            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.15);
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow:
+                0 0 0 4px rgba(56, 189, 248, 0.1),
+                0 0 15px rgba(56, 189, 248, 0.12);
         }
 
         .price-prefix {
@@ -438,29 +528,48 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #4fc3f7 0%, #2196f3 100%);
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.9) 0%, rgba(14, 165, 233, 0.9) 100%);
             color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow:
-                0 4px 15px rgba(79, 195, 247, 0.3),
-                0 2px 4px rgba(0, 0, 0, 0.2);
+                0 4px 12px rgba(56, 189, 248, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow:
-                0 8px 25px rgba(79, 195, 247, 0.4),
-                0 4px 8px rgba(0, 0, 0, 0.3);
+                0 8px 20px rgba(56, 189, 248, 0.35),
+                0 4px 8px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow:
+                0 2px 8px rgba(56, 189, 248, 0.2),
+                inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.1s ease;
         }
 
         .btn-secondary {
-            background: transparent;
-            border: 2px solid rgba(79, 195, 247, 0.4);
-            color: #4fc3f7;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .btn-secondary:hover {
-            background: rgba(79, 195, 247, 0.1);
-            border-color: #4fc3f7;
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(56, 189, 248, 0.3);
+            color: #38bdf8;
+        }
+
+        .btn-secondary:active {
+            background: rgba(255, 255, 255, 0.02);
+            transform: scale(0.98);
         }
 
         /* Results Section */
@@ -702,25 +811,28 @@
         .modal-input {
             width: 100%;
             padding: 14px 16px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(0, 0, 0, 0.2);
             color: #fff;
             font-size: 1rem;
             margin-bottom: 20px;
-            transition: all 0.3s;
+            transition: all 0.2s ease;
         }
 
         .modal-input:hover:not(:focus) {
-            border-color: rgba(79, 195, 247, 0.3);
-            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.12);
+            background: rgba(0, 0, 0, 0.25);
         }
 
         .modal-input:focus {
             outline: none;
-            border-color: #4fc3f7;
-            background: rgba(79, 195, 247, 0.05);
-            box-shadow: inset 0 0 0 1px rgba(79, 195, 247, 0.3), 0 0 20px rgba(79, 195, 247, 0.15);
+            border-color: rgba(56, 189, 248, 0.5);
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow:
+                0 0 0 4px rgba(56, 189, 248, 0.1),
+                0 0 20px rgba(56, 189, 248, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .modal-buttons {
@@ -820,25 +932,28 @@
         .password-box input {
             width: 100%;
             padding: 14px 16px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(0, 0, 0, 0.2);
             color: #fff;
             font-size: 1rem;
             margin-bottom: 16px;
-            transition: all 0.3s;
+            transition: all 0.2s ease;
         }
 
         .password-box input:hover:not(:focus) {
-            border-color: rgba(79, 195, 247, 0.3);
-            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.12);
+            background: rgba(0, 0, 0, 0.25);
         }
 
         .password-box input:focus {
             outline: none;
-            border-color: #4fc3f7;
-            background: rgba(79, 195, 247, 0.05);
-            box-shadow: inset 0 0 0 1px rgba(79, 195, 247, 0.3), 0 0 20px rgba(79, 195, 247, 0.15);
+            border-color: rgba(56, 189, 248, 0.5);
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow:
+                0 0 0 4px rgba(56, 189, 248, 0.1),
+                0 0 20px rgba(56, 189, 248, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .password-error {
