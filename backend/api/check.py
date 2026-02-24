@@ -86,6 +86,56 @@ def scrape_marktplaats(term: str) -> list:
     return ads
 
 
+def scrape_rataplan(term: str) -> list:
+    """Scrape RataPlan kringloop webshop voor producten."""
+    encoded_term = urllib.parse.quote(term)
+    url = f"https://rataplan.com/?s={encoded_term}"
+
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "nl-NL,nl;q=0.9,en;q=0.8",
+    }
+
+    ads = []
+
+    try:
+        response = requests.get(url, headers=headers, timeout=30)
+        response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, "html.parser")
+        products = soup.find_all("li", class_="product")
+
+        for product in products[:10]:
+            try:
+                link_elem = product.find("a", href=True)
+                title_elem = product.find("h2") or product.find("h3")
+                price_elem = product.find("span", class_="price") or product.find(class_="price")
+
+                if link_elem:
+                    href = link_elem.get("href", "")
+                    title = title_elem.get_text(strip=True) if title_elem else "Onbekend"
+                    price = price_elem.get_text(strip=True) if price_elem else "Prijs onbekend"
+
+                    # Genereer uniek ID uit URL
+                    ad_id = f"rp_{href.rstrip('/').split('/')[-1][:20]}"
+
+                    ads.append({
+                        "id": ad_id,
+                        "title": title,
+                        "price": price,
+                        "url": href,
+                        "site": "RataPlan"
+                    })
+            except Exception:
+                continue
+
+    except requests.RequestException:
+        pass
+
+    return ads
+
+
 def scrape_vinted(term: str) -> list:
     """Scrape Vinted voor advertenties."""
     encoded_term = urllib.parse.quote(term)
@@ -217,6 +267,9 @@ class handler(BaseHTTPRequestHandler):
 
                         if 'vinted' in sites:
                             all_ads.extend(scrape_vinted(term))
+
+                        if 'rataplan' in sites:
+                            all_ads.extend(scrape_rataplan(term))
 
                         for ad in all_ads:
                             if not is_seen(r, ad['id']):
