@@ -1,16 +1,71 @@
-# Theepot Tracker (Marktwatch)
+# Theepot Tracker
 
-Een Python CLI-tool die Marktplaats en Vinted monitort op nieuwe advertenties en Telegram-meldingen stuurt bij treffers.
+Monitor Marktplaats en Vinted automatisch op nieuwe advertenties. Ontvang email notificaties bij nieuwe vondsten.
 
-## Features
+## Web Versie (Aanbevolen)
 
-- Monitor meerdere zoektermen tegelijk
-- Scraping van Marktplaats en Vinted
-- Telegram notificaties voor nieuwe advertenties
-- Deduplicatie (geen dubbele meldingen)
-- Mooie CLI output met Rich
+Draait volledig in de cloud - geen PC nodig.
 
-## Installatie
+**Live website:** https://mailbvandongen-eng.github.io/theepot-tracker/
+
+### Zelf hosten
+
+#### 1. Frontend (GitHub Pages)
+
+De `index.html` wordt automatisch gehost via GitHub Pages.
+
+#### 2. Backend (Vercel)
+
+**Benodigde accounts (gratis):**
+- [Vercel](https://vercel.com) - hosting
+- [Upstash](https://upstash.com) - Redis database
+- [Resend](https://resend.com) - email verzending
+
+**Stappen:**
+
+1. **Upstash Redis aanmaken:**
+   - Ga naar [Upstash Console](https://console.upstash.com)
+   - Maak een nieuwe Redis database
+   - Kopieer de `UPSTASH_REDIS_REST_URL`
+
+2. **Resend API key:**
+   - Ga naar [Resend Dashboard](https://resend.com/api-keys)
+   - Maak een API key
+
+3. **Deploy naar Vercel:**
+   ```bash
+   cd backend
+   npx vercel --prod
+   ```
+
+4. **Environment variables instellen in Vercel:**
+   - `REDIS_URL` = je Upstash Redis URL
+   - `RESEND_API_KEY` = je Resend API key
+   - `FROM_EMAIL` = afzender email (optioneel)
+
+5. **Update frontend:**
+   - Pas `API_URL` aan in `index.html` naar je Vercel URL
+
+### Hoe het werkt
+
+```
+Jouw browser (website)
+        │
+        ▼
+Vercel backend (Python)
+   - Slaat zoektermen op in Redis
+   - Cron job elke 10 minuten
+   - Scraped Marktplaats & Vinted
+   - Stuurt email bij nieuwe items
+```
+
+---
+
+## CLI Versie
+
+Draait lokaal op je PC met Telegram notificaties.
+
+### Installatie
 
 ```bash
 git clone https://github.com/mailbvandongen-eng/theepot-tracker.git
@@ -18,72 +73,28 @@ cd theepot-tracker
 pip install -r requirements.txt
 ```
 
-## Configuratie
-
-### 1. Telegram instellen
+### Configuratie
 
 ```bash
-python marktwatch.py setup
+python marktwatch.py setup    # Telegram instellen
+python marktwatch.py keywords add   # Zoekwoorden toevoegen
 ```
 
-Je hebt nodig:
-- Een Telegram Bot Token (maak een bot via [@BotFather](https://t.me/BotFather))
-- Je Chat ID (verkrijg via [@userinfobot](https://t.me/userinfobot))
-
-### 2. Zoekwoorden toevoegen
+### Gebruik
 
 ```bash
-python marktwatch.py keywords add
+python marktwatch.py keywords list      # Toon zoekwoorden
+python marktwatch.py keywords remove 1  # Verwijder zoekwoord
+python marktwatch.py keywords toggle 1  # Aan/uit zetten
+python marktwatch.py run                # Eenmalige check
+python marktwatch.py watch              # Loop elke 10 min
 ```
 
-## Gebruik
-
-```bash
-# Toon alle zoekwoorden
-python marktwatch.py keywords list
-
-# Voeg zoekwoord toe (interactief)
-python marktwatch.py keywords add
-
-# Verwijder zoekwoord
-python marktwatch.py keywords remove <id>
-
-# Zoekwoord aan/uit zetten
-python marktwatch.py keywords toggle <id>
-
-# Eenmalige check
-python marktwatch.py run
-
-# Continue monitoring (elke 10 minuten)
-python marktwatch.py watch
-```
-
-## Bestandsstructuur
-
-```
-marktwatch/
-  marktwatch.py      # Hoofdscript
-  config.json        # Telegram token + chat_id (niet in git)
-  keywords.json      # Opgeslagen zoekwoorden
-  seen.json          # Geziene advertentie-IDs (niet in git)
-  requirements.txt   # Dependencies
-```
-
-## Telegram melding voorbeeld
-
-```
-Nieuwe advertentie gevonden!
-
-Zoekterm: theepot delfts blauw
-Site: Marktplaats
-Theepot 19e eeuw - Delfts Blauw
-€45,00
-https://www.marktplaats.nl/...
-```
+---
 
 ## Disclaimer
 
-Deze tool is bedoeld voor persoonlijk gebruik. Respecteer de gebruiksvoorwaarden van Marktplaats en Vinted. Overmatig scrapen kan leiden tot IP-blokkades.
+Deze tool is bedoeld voor persoonlijk gebruik. Respecteer de gebruiksvoorwaarden van Marktplaats en Vinted.
 
 ## Licentie
 

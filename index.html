@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theepot Tracker</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            color: #4fc3f7;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            outline: none;
+            border-color: #4fc3f7;
+        }
+
+        input::placeholder {
+            color: #666;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4fc3f7 0%, #2196f3 100%);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 8px 25px rgba(79, 195, 247, 0.3);
+        }
+
+        .btn-danger {
+            background: #ff5252;
+            color: #fff;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            width: auto;
+        }
+
+        .subscriptions-list {
+            list-style: none;
+        }
+
+        .subscription-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .subscription-info {
+            flex: 1;
+        }
+
+        .subscription-term {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .subscription-sites {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #666;
+            padding: 30px;
+        }
+
+        .message {
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .message.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4caf50;
+            color: #81c784;
+        }
+
+        .message.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            color: #e57373;
+        }
+
+        .loading {
+            text-align: center;
+            color: #888;
+        }
+
+        .config-note {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #ffd54f;
+        }
+
+        .config-note code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #555;
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: #4fc3f7;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Theepot Tracker</h1>
+            <p class="subtitle">Monitor Marktplaats & Vinted automatisch</p>
+        </header>
+
+        <div id="config-warning" class="config-note" style="display: none;">
+            <strong>Backend niet geconfigureerd.</strong><br>
+            Pas <code>API_URL</code> aan in de JavaScript code na het deployen van je Vercel backend.
+        </div>
+
+        <div id="message" class="message" style="display: none;"></div>
+
+        <div class="card">
+            <h2>Nieuwe zoekopdracht</h2>
+            <form id="subscribe-form">
+                <div class="form-group">
+                    <label for="term">Zoekterm</label>
+                    <input type="text" id="term" name="term" placeholder="bijv. theepot delfts blauw" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Zoeken op</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="sites" value="marktplaats" checked>
+                            Marktplaats
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="sites" value="vinted" checked>
+                            Vinted
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mailadres voor notificaties</label>
+                    <input type="email" id="email" name="email" placeholder="jouw@email.nl" required>
+                </div>
+
+                <button type="submit" class="btn-primary">Toevoegen</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Actieve zoekopdrachten</h2>
+            <div id="subscriptions-container">
+                <p class="loading">Laden...</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>Checks elke 10 minuten &bull; <a href="https://github.com/mailbvandongen-eng/theepot-tracker" target="_blank">GitHub</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // BELANGRIJK: Pas deze URL aan na het deployen van je Vercel backend
+        const API_URL = 'https://theepot-tracker-api.vercel.app';
+
+        // Check of API geconfigureerd is
+        if (API_URL.includes('theepot-tracker-api.vercel.app')) {
+            document.getElementById('config-warning').style.display = 'block';
+        }
+
+        // Toon bericht
+        function showMessage(text, type) {
+            const msgEl = document.getElementById('message');
+            msgEl.textContent = text;
+            msgEl.className = `message ${type}`;
+            msgEl.style.display = 'block';
+            setTimeout(() => {
+                msgEl.style.display = 'none';
+            }, 5000);
+        }
+
+        // Laad subscriptions
+        async function loadSubscriptions() {
+            const container = document.getElementById('subscriptions-container');
+
+            try {
+                const response = await fetch(`${API_URL}/api/subscriptions`);
+
+                if (!response.ok) {
+                    throw new Error('Kan subscriptions niet laden');
+                }
+
+                const data = await response.json();
+
+                if (!data.subscriptions || data.subscriptions.length === 0) {
+                    container.innerHTML = '<p class="empty-state">Nog geen zoekopdrachten. Voeg er een toe!</p>';
+                    return;
+                }
+
+                const html = `
+                    <ul class="subscriptions-list">
+                        ${data.subscriptions.map(sub => `
+                            <li class="subscription-item">
+                                <div class="subscription-info">
+                                    <div class="subscription-term">${escapeHtml(sub.term)}</div>
+                                    <div class="subscription-sites">${sub.sites.join(', ')} &bull; ${escapeHtml(sub.email)}</div>
+                                </div>
+                                <button class="btn-danger" onclick="removeSubscription('${sub.id}')">Verwijderen</button>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+                container.innerHTML = html;
+
+            } catch (error) {
+                container.innerHTML = '<p class="empty-state">Kon niet verbinden met de backend. Is deze geconfigureerd?</p>';
+                console.error('Error loading subscriptions:', error);
+            }
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Voeg subscription toe
+        document.getElementById('subscribe-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const term = document.getElementById('term').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const siteCheckboxes = document.querySelectorAll('input[name="sites"]:checked');
+            const sites = Array.from(siteCheckboxes).map(cb => cb.value);
+
+            if (!term || !email || sites.length === 0) {
+                showMessage('Vul alle velden in en selecteer minimaal 1 site', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/subscribe`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ term, email, sites }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage('Zoekopdracht toegevoegd!', 'success');
+                    document.getElementById('term').value = '';
+                    loadSubscriptions();
+                } else {
+                    showMessage(data.error || 'Er ging iets mis', 'error');
+                }
+            } catch (error) {
+                showMessage('Kon niet verbinden met de server', 'error');
+                console.error('Error:', error);
+            }
+        });
+
+        // Verwijder subscription
+        async function removeSubscription(id) {
+            if (!confirm('Weet je zeker dat je deze zoekopdracht wilt verwijderen?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/unsubscribe`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id }),
+                });
+
+                if (response.ok) {
+                    showMessage('Zoekopdracht verwijderd', 'success');
+                    loadSubscriptions();
+                } else {
+                    const data = await response.json();
+                    showMessage(data.error || 'Er ging iets mis', 'error');
+                }
+            } catch (error) {
+                showMessage('Kon niet verbinden met de server', 'error');
+                console.error('Error:', error);
+            }
+        }
+
+        // Laad subscriptions bij page load
+        loadSubscriptions();
+
+        // Sla email op in localStorage voor gemak
+        const emailInput = document.getElementById('email');
+        const savedEmail = localStorage.getItem('theepot-email');
+        if (savedEmail) {
+            emailInput.value = savedEmail;
+        }
+        emailInput.addEventListener('change', () => {
+            localStorage.setItem('theepot-email', emailInput.value);
+        });
+    </script>
+</body>
+</html>
