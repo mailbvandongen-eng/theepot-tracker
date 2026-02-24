@@ -14,7 +14,10 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0d0d1a 0%, #0f1624 100%);
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(79, 195, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(156, 39, 176, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, #0a0a14 0%, #0d1220 100%);
             min-height: 100vh;
             color: #fff;
         }
@@ -84,14 +87,19 @@
             }
         }
 
-        /* Cards */
+        /* Cards - Glassmorphism */
         .card {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 24px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                0 2px 8px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.15);
         }
 
         .card-header {
@@ -124,9 +132,14 @@
             align-items: center;
             gap: 8px;
             padding: 12px 16px;
-            background: rgba(255,255,255,0.02);
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow:
+                0 2px 8px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .stat-item i {
@@ -198,7 +211,10 @@
             outline: none;
             border-color: #4fc3f7;
             background: rgba(79, 195, 247, 0.05);
-            box-shadow: inset 0 0 0 1px rgba(79, 195, 247, 0.3), 0 0 20px rgba(79, 195, 247, 0.15);
+            box-shadow:
+                0 0 0 3px rgba(79, 195, 247, 0.2),
+                0 0 20px rgba(79, 195, 247, 0.15),
+                inset 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .search-input::placeholder {
@@ -291,10 +307,79 @@
             display: block;
         }
 
-        .filter-placeholder {
+        /* Price Filter */
+        .filter-group {
+            margin-bottom: 0;
+        }
+
+        .filter-label {
+            display: block;
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .price-inputs {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .price-input-wrapper {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0 12px;
+            transition: all 0.2s;
+        }
+
+        .price-input-wrapper:focus-within {
+            border-color: #4fc3f7;
+            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.15);
+        }
+
+        .price-prefix {
             color: #666;
-            font-size: 0.85rem;
-            font-style: italic;
+            font-size: 0.9rem;
+            margin-right: 4px;
+        }
+
+        .price-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 0.9rem;
+            padding: 10px 0;
+            width: 100%;
+        }
+
+        .price-input:focus {
+            outline: none;
+        }
+
+        .price-input::placeholder {
+            color: #555;
+        }
+
+        /* Hide number input spinners */
+        .price-input::-webkit-outer-spin-button,
+        .price-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .price-input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .price-separator {
+            color: #555;
+            font-size: 1rem;
         }
 
         .site-option {
@@ -355,11 +440,16 @@
         .btn-primary {
             background: linear-gradient(135deg, #4fc3f7 0%, #2196f3 100%);
             color: #fff;
+            box-shadow:
+                0 4px 15px rgba(79, 195, 247, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(79, 195, 247, 0.3);
+            box-shadow:
+                0 8px 25px rgba(79, 195, 247, 0.4),
+                0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         .btn-secondary {
@@ -687,18 +777,26 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #0d0d1a 0%, #0f1624 100%);
+            background:
+                radial-gradient(ellipse at 30% 30%, rgba(79, 195, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 70%, rgba(156, 39, 176, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, #0a0a14 0%, #0d1220 100%);
             z-index: 9999;
             justify-content: center;
             align-items: center;
         }
 
         .password-box {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 40px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
             max-width: 400px;
             width: 90%;
         }
@@ -890,7 +988,20 @@
 
                 <!-- Filter Options Dropdown -->
                 <div class="filter-options" id="filter-options">
-                    <p class="filter-placeholder">Filters komen binnenkort...</p>
+                    <div class="filter-group">
+                        <label class="filter-label">Prijsbereik</label>
+                        <div class="price-inputs">
+                            <div class="price-input-wrapper">
+                                <span class="price-prefix">€</span>
+                                <input type="number" class="price-input" id="price-min" placeholder="Min" min="0">
+                            </div>
+                            <span class="price-separator">–</span>
+                            <div class="price-input-wrapper">
+                                <span class="price-prefix">€</span>
+                                <input type="number" class="price-input" id="price-max" placeholder="Max" min="0">
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Action Buttons -->
@@ -1102,6 +1213,46 @@
             searchNow();
         }
 
+        // Price Filter
+        function getPriceParams(site, min, max) {
+            if (!min && !max) return '';
+
+            switch(site) {
+                case 'marktplaats':
+                    let mpParams = '';
+                    if (min) mpParams += `&PriceCentsFrom=${min * 100}`;
+                    if (max) mpParams += `&PriceCentsTo=${max * 100}`;
+                    return mpParams;
+                case 'vinted':
+                    let vParams = '';
+                    if (min) vParams += `&price_from=${min}`;
+                    if (max) vParams += `&price_to=${max}`;
+                    return vParams;
+                case '2dehands':
+                    let dhParams = '';
+                    if (min) dhParams += `&price%5Bgte%5D=${min}`;
+                    if (max) dhParams += `&price%5Blte%5D=${max}`;
+                    return dhParams;
+                case 'ebay':
+                    let ebParams = '';
+                    if (min) ebParams += `&_udlo=${min}`;
+                    if (max) ebParams += `&_udhi=${max}`;
+                    return ebParams;
+                default:
+                    return '';
+            }
+        }
+
+        function buildSearchUrl(site, term) {
+            const minPrice = document.getElementById('price-min').value;
+            const maxPrice = document.getElementById('price-max').value;
+
+            let url = siteUrls[site](term);
+            url += getPriceParams(site, minPrice, maxPrice);
+
+            return url;
+        }
+
         // Search Now
         function searchNow() {
             const term = document.getElementById('search-term').value.trim();
@@ -1119,9 +1270,9 @@
             // Add to history
             addToHistory(term);
 
-            // Generate cards
+            // Generate cards with price filter
             const cardsHtml = sites.map(site =>
-                `<a href="${siteUrls[site](term)}" target="_blank" class="result-card">
+                `<a href="${buildSearchUrl(site, term)}" target="_blank" class="result-card">
                     <i data-lucide="external-link"></i>
                     <span>${siteNames[site]}</span>
                 </a>`
