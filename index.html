@@ -945,7 +945,7 @@
                 <div class="search-options">
                     <button class="option-btn" id="sites-btn" onclick="toggleSiteSelector()">
                         <i data-lucide="globe"></i>
-                        <span><span id="site-count">7</span> sites</span>
+                        <span><span id="site-count">13</span> sites</span>
                         <i data-lucide="chevron-down" class="arrow"></i>
                     </button>
                     <button class="option-btn" id="filters-btn" onclick="toggleFilters()">
@@ -983,6 +983,30 @@
                         <label class="site-option selected">
                             <input type="checkbox" value="koopplein" checked>
                             Koopplein
+                        </label>
+                        <label class="site-option selected">
+                            <input type="checkbox" value="catawiki" checked>
+                            Catawiki
+                        </label>
+                        <label class="site-option selected">
+                            <input type="checkbox" value="etsy" checked>
+                            Etsy
+                        </label>
+                        <label class="site-option selected">
+                            <input type="checkbox" value="whoppah" checked>
+                            Whoppah
+                        </label>
+                        <label class="site-option selected">
+                            <input type="checkbox" value="bolcom" checked>
+                            Bol.com
+                        </label>
+                        <label class="site-option selected">
+                            <input type="checkbox" value="kleinanzeigen" checked>
+                            Kleinanzeigen.de
+                        </label>
+                        <label class="site-option selected">
+                            <input type="checkbox" value="hetgoed" checked>
+                            Het Goed
                         </label>
                     </div>
 
@@ -1087,7 +1111,13 @@
             '2dehands': term => `https://www.2dehands.be/q/${encodeURIComponent(term)}/`,
             ebay: term => `https://www.ebay.nl/sch/i.html?_nkw=${encodeURIComponent(term)}`,
             speurders: term => `https://www.speurders.nl/overzicht/${encodeURIComponent(term)}/`,
-            koopplein: term => `https://www.koopplein.nl/heel-nederland/zoekopdracht?q=${encodeURIComponent(term)}`
+            koopplein: term => `https://www.koopplein.nl/heel-nederland/zoekopdracht?q=${encodeURIComponent(term)}`,
+            catawiki: term => `https://www.catawiki.nl/l/q/${encodeURIComponent(term)}`,
+            etsy: term => `https://www.etsy.com/nl/search?q=${encodeURIComponent(term)}`,
+            whoppah: term => `https://www.whoppah.com/nl/search?q=${encodeURIComponent(term)}`,
+            bolcom: term => `https://www.bol.com/nl/nl/s/?searchtext=${encodeURIComponent(term)}&filter=N_2`,
+            kleinanzeigen: term => `https://www.kleinanzeigen.de/s-${encodeURIComponent(term)}/k0`,
+            hetgoed: term => `https://www.hetgoed.nl/zoeken?q=${encodeURIComponent(term)}`
         };
 
         const siteNames = {
@@ -1097,7 +1127,13 @@
             '2dehands': '2dehands.be',
             ebay: 'eBay.nl',
             speurders: 'Speurders',
-            koopplein: 'Koopplein'
+            koopplein: 'Koopplein',
+            catawiki: 'Catawiki',
+            etsy: 'Etsy',
+            whoppah: 'Whoppah',
+            bolcom: 'Bol.com',
+            kleinanzeigen: 'Kleinanzeigen.de',
+            hetgoed: 'Het Goed'
         };
 
         // Password Check
@@ -1238,6 +1274,26 @@
                     if (min) ebParams += `&_udlo=${min}`;
                     if (max) ebParams += `&_udhi=${max}`;
                     return ebParams;
+                case 'catawiki':
+                    let catParams = '';
+                    if (min) catParams += `&price%5Bmin%5D=${min}`;
+                    if (max) catParams += `&price%5Bmax%5D=${max}`;
+                    return catParams;
+                case 'etsy':
+                    let etsyParams = '';
+                    if (min) etsyParams += `&min_price=${min}`;
+                    if (max) etsyParams += `&max_price=${max}`;
+                    return etsyParams;
+                case 'whoppah':
+                    let whParams = '';
+                    if (min) whParams += `&price_from=${min}`;
+                    if (max) whParams += `&price_to=${max}`;
+                    return whParams;
+                case 'bolcom':
+                    let bolParams = '';
+                    if (min) bolParams += `&price=${min}-`;
+                    if (max) bolParams += max;
+                    return bolParams;
                 default:
                     return '';
             }
