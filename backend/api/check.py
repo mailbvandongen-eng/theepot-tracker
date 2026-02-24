@@ -200,6 +200,231 @@ def scrape_vinted(term: str) -> list:
     return ads
 
 
+def scrape_2dehands(term: str) -> list:
+    """Scrape 2dehands.be (Belgische Marktplaats) voor advertenties."""
+    encoded_term = urllib.parse.quote(term)
+    url = f"https://www.2dehands.be/q/{encoded_term}/"
+
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "nl-BE,nl;q=0.9,en;q=0.8",
+    }
+
+    ads = []
+
+    try:
+        response = requests.get(url, headers=headers, timeout=30)
+        response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, "html.parser")
+        listings = soup.find_all("li", class_="hz-Listing")
+
+        if not listings:
+            listings = soup.find_all("article", {"data-testid": "listing"})
+
+        for listing in listings[:10]:
+            try:
+                title_elem = (
+                    listing.find("h3", class_="hz-Listing-title") or
+                    listing.find("a", class_="hz-Listing-title") or
+                    listing.find("h3")
+                )
+                price_elem = (
+                    listing.find("p", class_="hz-Listing-price") or
+                    listing.find("span", class_="hz-Listing-price")
+                )
+                link_elem = listing.find("a", href=True)
+
+                if title_elem and link_elem:
+                    title = title_elem.get_text(strip=True)
+                    price = price_elem.get_text(strip=True) if price_elem else "Prijs onbekend"
+                    href = link_elem.get("href", "")
+
+                    if not href.startswith("http"):
+                        href = f"https://www.2dehands.be{href}"
+
+                    ad_id = f"2h_{href.split('/')[-1].split('.')[0][:20]}"
+
+                    ads.append({
+                        "id": ad_id,
+                        "title": title,
+                        "price": price,
+                        "url": href,
+                        "site": "2dehands"
+                    })
+            except Exception:
+                continue
+
+    except requests.RequestException:
+        pass
+
+    return ads
+
+
+def scrape_ebay(term: str) -> list:
+    """Scrape eBay.nl voor advertenties."""
+    encoded_term = urllib.parse.quote(term)
+    url = f"https://www.ebay.nl/sch/i.html?_nkw={encoded_term}"
+
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "nl-NL,nl;q=0.9,en;q=0.8",
+    }
+
+    ads = []
+
+    try:
+        response = requests.get(url, headers=headers, timeout=30)
+        response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, "html.parser")
+        items = soup.find_all("li", class_="s-item")
+
+        for item in items[:10]:
+            try:
+                title_elem = item.find("h3", class_="s-item__title") or item.find(class_="s-item__title")
+                price_elem = item.find("span", class_="s-item__price")
+                link_elem = item.find("a", class_="s-item__link") or item.find("a", href=True)
+
+                if title_elem and link_elem:
+                    title = title_elem.get_text(strip=True)
+                    if title.lower() == "shop on ebay":
+                        continue
+                    price = price_elem.get_text(strip=True) if price_elem else "Prijs onbekend"
+                    href = link_elem.get("href", "")
+
+                    # Extract item ID from URL
+                    item_id = href.split("/itm/")[-1].split("?")[0][:20] if "/itm/" in href else href[-20:]
+                    ad_id = f"eb_{item_id}"
+
+                    ads.append({
+                        "id": ad_id,
+                        "title": title,
+                        "price": price,
+                        "url": href,
+                        "site": "eBay"
+                    })
+            except Exception:
+                continue
+
+    except requests.RequestException:
+        pass
+
+    return ads
+
+
+def scrape_speurders(term: str) -> list:
+    """Scrape Speurders.nl voor advertenties."""
+    encoded_term = urllib.parse.quote(term)
+    url = f"https://www.speurders.nl/overzicht/{encoded_term}/"
+
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "nl-NL,nl;q=0.9,en;q=0.8",
+    }
+
+    ads = []
+
+    try:
+        response = requests.get(url, headers=headers, timeout=30)
+        response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, "html.parser")
+        items = soup.find_all("article", class_="listing") or soup.find_all("div", class_="listing-item")
+
+        if not items:
+            items = soup.find_all("li", class_="result")
+
+        for item in items[:10]:
+            try:
+                title_elem = item.find("h2") or item.find("h3") or item.find(class_="title")
+                price_elem = item.find(class_="price") or item.find(class_="listing-price")
+                link_elem = item.find("a", href=True)
+
+                if link_elem:
+                    title = title_elem.get_text(strip=True) if title_elem else "Onbekend"
+                    price = price_elem.get_text(strip=True) if price_elem else "Prijs onbekend"
+                    href = link_elem.get("href", "")
+
+                    if not href.startswith("http"):
+                        href = f"https://www.speurders.nl{href}"
+
+                    ad_id = f"sp_{href.rstrip('/').split('/')[-1][:20]}"
+
+                    ads.append({
+                        "id": ad_id,
+                        "title": title,
+                        "price": price,
+                        "url": href,
+                        "site": "Speurders"
+                    })
+            except Exception:
+                continue
+
+    except requests.RequestException:
+        pass
+
+    return ads
+
+
+def scrape_koopplein(term: str) -> list:
+    """Scrape Koopplein.nl voor advertenties."""
+    encoded_term = urllib.parse.quote(term)
+    url = f"https://www.koopplein.nl/heel-nederland/zoekopdracht?q={encoded_term}"
+
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "nl-NL,nl;q=0.9,en;q=0.8",
+    }
+
+    ads = []
+
+    try:
+        response = requests.get(url, headers=headers, timeout=30, allow_redirects=True)
+        response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, "html.parser")
+        items = soup.find_all("article") or soup.find_all("div", class_="ad-item")
+
+        if not items:
+            items = soup.find_all("li", class_="ad")
+
+        for item in items[:10]:
+            try:
+                title_elem = item.find("h2") or item.find("h3") or item.find(class_="title")
+                price_elem = item.find(class_="price")
+                link_elem = item.find("a", href=True)
+
+                if link_elem:
+                    title = title_elem.get_text(strip=True) if title_elem else "Onbekend"
+                    price = price_elem.get_text(strip=True) if price_elem else "Prijs onbekend"
+                    href = link_elem.get("href", "")
+
+                    if not href.startswith("http"):
+                        href = f"https://www.koopplein.nl{href}"
+
+                    ad_id = f"kp_{href.rstrip('/').split('/')[-1][:20]}"
+
+                    ads.append({
+                        "id": ad_id,
+                        "title": title,
+                        "price": price,
+                        "url": href,
+                        "site": "Koopplein"
+                    })
+            except Exception:
+                continue
+
+    except requests.RequestException:
+        pass
+
+    return ads
+
+
 def send_email(to_email: str, term: str, ad: dict) -> bool:
     """Stuur email notificatie."""
     resend.api_key = os.environ.get('RESEND_API_KEY', '')
@@ -270,6 +495,18 @@ class handler(BaseHTTPRequestHandler):
 
                         if 'rataplan' in sites:
                             all_ads.extend(scrape_rataplan(term))
+
+                        if '2dehands' in sites:
+                            all_ads.extend(scrape_2dehands(term))
+
+                        if 'ebay' in sites:
+                            all_ads.extend(scrape_ebay(term))
+
+                        if 'speurders' in sites:
+                            all_ads.extend(scrape_speurders(term))
+
+                        if 'koopplein' in sites:
+                            all_ads.extend(scrape_koopplein(term))
 
                         for ad in all_ads:
                             if not is_seen(r, ad['id']):

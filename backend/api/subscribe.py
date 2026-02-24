@@ -36,7 +36,7 @@ class handler(BaseHTTPRequestHandler):
                 return
 
             # Valideer sites
-            valid_sites = ['marktplaats', 'vinted', 'rataplan']
+            valid_sites = ['marktplaats', 'vinted', 'rataplan', '2dehands', 'ebay', 'speurders', 'koopplein']
             sites = [s for s in sites if s in valid_sites]
             if not sites:
                 self.send_error_response(400, 'Selecteer minimaal 1 site')
