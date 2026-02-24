@@ -16,110 +16,233 @@
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
             color: #fff;
-            padding: 20px;
         }
 
-        .container {
-            max-width: 600px;
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #888;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            border-color: #ff5252;
+            color: #ff5252;
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+            padding: 24px;
+            max-width: 1400px;
             margin: 0 auto;
+            min-height: calc(100vh - 60px);
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 40px;
+        @media (max-width: 1024px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
         }
 
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: #a0a0a0;
-            font-size: 1.1rem;
-        }
-
+        /* Cards */
         .card {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 20px;
+            padding: 24px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .card h2 {
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            color: #4fc3f7;
-        }
-
-        .form-group {
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #ccc;
-            font-size: 0.9rem;
+        .card-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            font-weight: 600;
         }
 
-        input[type="text"],
-        input[type="email"] {
+        /* Search Panel */
+        .search-panel {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-label {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .search-input {
             width: 100%;
-            padding: 14px 16px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            padding: 18px 20px;
+            padding-right: 50px;
+            border: 2px solid rgba(79, 195, 247, 0.3);
+            border-radius: 12px;
             background: rgba(255, 255, 255, 0.05);
             color: #fff;
-            font-size: 1rem;
-            transition: border-color 0.3s;
+            font-size: 1.1rem;
+            transition: all 0.3s;
         }
 
-        input[type="text"]:focus,
-        input[type="email"]:focus {
+        .search-input:focus {
             outline: none;
             border-color: #4fc3f7;
+            background: rgba(255, 255, 255, 0.08);
         }
 
-        input::placeholder {
+        .search-input::placeholder {
             color: #666;
         }
 
-        .checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px 20px;
-            margin-top: 10px;
+        .search-icon {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4fc3f7;
+            font-size: 1.2rem;
         }
 
-        .checkbox-item {
+        /* Site Selector */
+        .site-selector {
+            margin-bottom: 20px;
+        }
+
+        .site-selector-toggle {
             display: flex;
             align-items: center;
             gap: 8px;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
             cursor: pointer;
-        }
-
-        .checkbox-item input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        button {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            transition: all 0.2s;
             width: 100%;
+            text-align: left;
+        }
+
+        .site-selector-toggle:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .site-selector-toggle .count {
+            color: #4fc3f7;
+            font-weight: 600;
+        }
+
+        .site-selector-toggle .arrow {
+            margin-left: auto;
+            transition: transform 0.2s;
+        }
+
+        .site-selector-toggle.open .arrow {
+            transform: rotate(180deg);
+        }
+
+        .site-options {
+            display: none;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
             padding: 16px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        .site-options.show {
+            display: flex;
+        }
+
+        .site-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            color: #ccc;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .site-option:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .site-option.selected {
+            background: rgba(79, 195, 247, 0.2);
+            border-color: rgba(79, 195, 247, 0.4);
+            color: #4fc3f7;
+        }
+
+        .site-option input {
+            display: none;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px 24px;
             border: none;
             border-radius: 10px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .btn-primary {
@@ -128,500 +251,679 @@
         }
 
         .btn-primary:hover {
+            transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(79, 195, 247, 0.3);
         }
 
-        .btn-danger {
-            background: #ff5252;
-            color: #fff;
-            padding: 8px 16px;
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid rgba(79, 195, 247, 0.4);
+            color: #4fc3f7;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(79, 195, 247, 0.1);
+            border-color: #4fc3f7;
+        }
+
+        /* Search Results */
+        .search-results {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .results-label {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        .results-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .result-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            background: rgba(79, 195, 247, 0.15);
+            color: #4fc3f7;
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            border-radius: 8px;
+            text-decoration: none;
             font-size: 0.9rem;
-            width: auto;
+            transition: all 0.2s;
         }
 
-        .subscriptions-list {
-            list-style: none;
+        .result-link:hover {
+            background: rgba(79, 195, 247, 0.3);
+            transform: translateY(-1px);
         }
 
-        .subscription-item {
+        /* Monitors Panel */
+        .monitors-panel {
+            height: fit-content;
+            position: sticky;
+            top: 24px;
+        }
+
+        .monitor-count {
+            background: rgba(79, 195, 247, 0.2);
+            color: #4fc3f7;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .monitors-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .monitor-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px;
+            padding: 14px 16px;
             background: rgba(255, 255, 255, 0.03);
             border-radius: 10px;
-            margin-bottom: 10px;
             border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s;
         }
 
-        .subscription-info {
+        .monitor-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .monitor-info {
             flex: 1;
+            min-width: 0;
         }
 
-        .subscription-term {
+        .monitor-term {
             font-weight: 600;
             margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .subscription-sites {
-            font-size: 0.85rem;
-            color: #888;
+        .monitor-meta {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .btn-delete {
+            background: transparent;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .btn-delete:hover {
+            background: rgba(255, 82, 82, 0.2);
+            color: #ff5252;
         }
 
         .empty-state {
             text-align: center;
             color: #666;
-            padding: 30px;
+            padding: 40px 20px;
+            font-size: 0.9rem;
         }
 
-        .message {
-            padding: 16px;
+        .empty-state-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 450px;
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1rem;
             margin-bottom: 20px;
-            text-align: center;
         }
 
-        .message.success {
-            background: rgba(76, 175, 80, 0.2);
-            border: 1px solid #4caf50;
-            color: #81c784;
+        .modal-input:focus {
+            outline: none;
+            border-color: #4fc3f7;
         }
 
-        .message.error {
-            background: rgba(244, 67, 54, 0.2);
-            border: 1px solid #f44336;
-            color: #e57373;
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
         }
 
-        .loading {
-            text-align: center;
+        .modal-buttons .btn {
+            flex: 1;
+        }
+
+        .btn-cancel {
+            background: rgba(255,255,255,0.1);
             color: #888;
         }
 
-        .config-note {
-            background: rgba(255, 193, 7, 0.1);
-            border: 1px solid rgba(255, 193, 7, 0.3);
+        .btn-cancel:hover {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+        }
+
+        /* Toast Messages */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 14px 24px;
             border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 20px;
             font-size: 0.9rem;
-            color: #ffd54f;
+            z-index: 2000;
+            transition: transform 0.3s;
         }
 
-        .config-note code {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
         }
 
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            color: #555;
-            font-size: 0.85rem;
+        .toast.success {
+            background: rgba(76, 175, 80, 0.9);
+            color: #fff;
         }
 
-        footer a {
-            color: #4fc3f7;
-            text-decoration: none;
+        .toast.error {
+            background: rgba(244, 67, 54, 0.9);
+            color: #fff;
         }
-    </style>
-    </style>
-</head>
-<body>
-    <!-- Wachtwoord overlay -->
-    <div id="password-overlay" style="
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        z-index: 9999;
-        justify-content: center;
-        align-items: center;
-    ">
-        <div style="
+
+        /* Password Overlay */
+        .password-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .password-box {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 16px;
             padding: 40px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
             max-width: 400px;
-        ">
-            <h2 style="color: #fff; margin-bottom: 20px;">Theepot Tracker</h2>
-            <p style="color: #a0a0a0; margin-bottom: 20px;">Voer wachtwoord in om toegang te krijgen</p>
-            <input type="password" id="password-input" placeholder="Wachtwoord" style="
-                width: 100%;
-                padding: 14px 16px;
-                border: 2px solid rgba(255, 255, 255, 0.1);
-                border-radius: 10px;
-                background: rgba(255, 255, 255, 0.05);
-                color: #fff;
-                font-size: 1rem;
-                margin-bottom: 16px;
-                box-sizing: border-box;
-            " onkeypress="if(event.key==='Enter')checkPassword()">
-            <button onclick="checkPassword()" style="
-                width: 100%;
-                padding: 14px;
-                border: none;
-                border-radius: 10px;
-                background: linear-gradient(135deg, #4fc3f7 0%, #2196f3 100%);
-                color: #fff;
-                font-size: 1rem;
-                font-weight: 600;
-                cursor: pointer;
-            ">Inloggen</button>
-            <p id="password-error" style="color: #ff5252; margin-top: 16px; display: none;">Onjuist wachtwoord</p>
+            width: 90%;
+        }
+
+        .password-box h2 {
+            margin-bottom: 8px;
+        }
+
+        .password-box p {
+            color: #888;
+            margin-bottom: 24px;
+        }
+
+        .password-box input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+
+        .password-box input:focus {
+            outline: none;
+            border-color: #4fc3f7;
+        }
+
+        .password-error {
+            color: #ff5252;
+            margin-top: 16px;
+            display: none;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 16px;
+            }
+
+            .search-label {
+                font-size: 1.2rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .monitors-panel {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Overlay -->
+    <div class="password-overlay" id="password-overlay">
+        <div class="password-box">
+            <h2>Theepot Tracker</h2>
+            <p>Voer wachtwoord in om toegang te krijgen</p>
+            <input type="password" id="password-input" placeholder="Wachtwoord" onkeypress="if(event.key==='Enter')checkPassword()">
+            <button class="btn btn-primary" onclick="checkPassword()" style="width: 100%;">Inloggen</button>
+            <p class="password-error" id="password-error">Onjuist wachtwoord</p>
         </div>
     </div>
 
-    <div class="container" id="main-content" style="display: none;">
-        <header>
-            <h1>Theepot Tracker</h1>
-            <p class="subtitle">Monitor Marktplaats & Vinted automatisch</p>
+    <!-- Main App -->
+    <div id="main-app" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span>🫖</span>
+                <span>Theepot Tracker</span>
+            </div>
+            <button class="btn-logout" onclick="logout()">Uitloggen</button>
         </header>
 
-        <div id="config-warning" class="config-note" style="display: none;">
-            <strong>Backend niet geconfigureerd.</strong><br>
-            Pas <code>API_URL</code> aan in de JavaScript code na het deployen van je Vercel backend.
-        </div>
+        <!-- Dashboard -->
+        <main class="dashboard">
+            <!-- Search Panel -->
+            <section class="card search-panel">
+                <label class="search-label">Wat zoek je?</label>
 
-        <div id="message" class="message" style="display: none;"></div>
-
-        <div class="card">
-            <h2>Zoek nu</h2>
-            <div class="form-group">
-                <label for="quick-search">Zoekterm</label>
-                <input type="text" id="quick-search" placeholder="bijv. theepot delfts blauw">
-            </div>
-            <div class="form-group">
-                <label>Zoeken op</label>
-                <div class="checkbox-group">
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="quick-sites" value="marktplaats" checked>
-                        Marktplaats
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="quick-sites" value="vinted" checked>
-                        Vinted
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="quick-sites" value="rataplan" checked>
-                        RataPlan
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="quick-sites" value="2dehands" checked>
-                        2dehands.be
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="quick-sites" value="ebay" checked>
-                        eBay.nl
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="quick-sites" value="speurders" checked>
-                        Speurders
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="quick-sites" value="koopplein" checked>
-                        Koopplein
-                    </label>
-                </div>
-            </div>
-            <button type="button" class="btn-primary" onclick="searchNow()">Zoek nu</button>
-            <div id="search-results" style="margin-top: 20px;"></div>
-        </div>
-
-        <div class="card">
-            <h2>Nieuwe zoekopdracht</h2>
-            <form id="subscribe-form">
-                <div class="form-group">
-                    <label for="term">Zoekterm</label>
-                    <input type="text" id="term" name="term" placeholder="bijv. theepot delfts blauw" required>
+                <div class="search-input-wrapper">
+                    <input type="text" class="search-input" id="search-term" placeholder="bijv. theepot delfts blauw">
+                    <span class="search-icon">🔍</span>
                 </div>
 
-                <div class="form-group">
-                    <label>Zoeken op</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="sites" value="marktplaats" checked>
+                <!-- Site Selector -->
+                <div class="site-selector">
+                    <button class="site-selector-toggle" onclick="toggleSiteSelector()">
+                        <span>📍</span>
+                        <span><span class="count" id="site-count">7</span> sites geselecteerd</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="site-options" id="site-options">
+                        <label class="site-option selected">
+                            <input type="checkbox" value="marktplaats" checked>
                             Marktplaats
                         </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="sites" value="vinted" checked>
+                        <label class="site-option selected">
+                            <input type="checkbox" value="vinted" checked>
                             Vinted
                         </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="sites" value="rataplan" checked>
+                        <label class="site-option selected">
+                            <input type="checkbox" value="rataplan" checked>
                             RataPlan
                         </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="sites" value="2dehands" checked>
+                        <label class="site-option selected">
+                            <input type="checkbox" value="2dehands" checked>
                             2dehands.be
                         </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="sites" value="ebay" checked>
+                        <label class="site-option selected">
+                            <input type="checkbox" value="ebay" checked>
                             eBay.nl
                         </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="sites" value="speurders" checked>
+                        <label class="site-option selected">
+                            <input type="checkbox" value="speurders" checked>
                             Speurders
                         </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="sites" value="koopplein" checked>
+                        <label class="site-option selected">
+                            <input type="checkbox" value="koopplein" checked>
                             Koopplein
                         </label>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="email">E-mailadres voor notificaties</label>
-                    <input type="email" id="email" name="email" placeholder="jouw@email.nl" required>
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="searchNow()">
+                        🔍 Zoek nu
+                    </button>
+                    <button class="btn btn-secondary" onclick="openMonitorModal()">
+                        📧 Monitor instellen
+                    </button>
                 </div>
 
-                <button type="submit" class="btn-primary">Toevoegen</button>
-            </form>
-        </div>
+                <!-- Search Results -->
+                <div class="search-results" id="search-results" style="display: none;">
+                    <p class="results-label" id="results-label"></p>
+                    <div class="results-links" id="results-links"></div>
+                </div>
+            </section>
 
-        <div class="card">
-            <h2>Actieve zoekopdrachten</h2>
-            <div id="subscriptions-container">
-                <p class="loading">Laden...</p>
-            </div>
-        </div>
-
-        <footer>
-            <p>Checks elke 10 minuten &bull; <a href="https://github.com/mailbvandongen-eng/theepot-tracker" target="_blank">GitHub</a></p>
-        </footer>
+            <!-- Monitors Panel -->
+            <aside class="card monitors-panel">
+                <div class="card-header">
+                    <span class="card-title">Actieve Monitors</span>
+                    <span class="monitor-count" id="monitor-count">0</span>
+                </div>
+                <div class="monitors-list" id="monitors-list">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <p>Nog geen monitors actief.<br>Gebruik "Monitor instellen" om te beginnen.</p>
+                    </div>
+                </div>
+            </aside>
+        </main>
     </div>
 
-    <script>
-        // Vercel backend URL
-        const API_URL = 'https://backend-eight-phi-18.vercel.app';
+    <!-- Email Modal -->
+    <div class="modal-overlay" id="email-modal">
+        <div class="modal">
+            <h3 class="modal-title">Monitor instellen</h3>
+            <p class="modal-subtitle">Ontvang een email als er nieuwe items worden gevonden voor "<span id="modal-term"></span>"</p>
+            <input type="email" class="modal-input" id="modal-email" placeholder="jouw@email.nl">
+            <div class="modal-buttons">
+                <button class="btn btn-cancel" onclick="closeMonitorModal()">Annuleren</button>
+                <button class="btn btn-primary" onclick="createMonitor()">Monitor starten</button>
+            </div>
+        </div>
+    </div>
 
-        // Wachtwoord beveiliging
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const API_URL = 'https://backend-eight-phi-18.vercel.app';
         const CORRECT_PASSWORD = 'lindatracker';
 
+        // Site URLs
+        const siteUrls = {
+            marktplaats: term => `https://www.marktplaats.nl/q/${encodeURIComponent(term)}/`,
+            vinted: term => `https://www.vinted.nl/catalog?search_text=${encodeURIComponent(term)}`,
+            rataplan: term => `https://rataplan.com/?s=${encodeURIComponent(term)}`,
+            '2dehands': term => `https://www.2dehands.be/q/${encodeURIComponent(term)}/`,
+            ebay: term => `https://www.ebay.nl/sch/i.html?_nkw=${encodeURIComponent(term)}`,
+            speurders: term => `https://www.speurders.nl/overzicht/${encodeURIComponent(term)}/`,
+            koopplein: term => `https://www.koopplein.nl/heel-nederland/zoekopdracht?q=${encodeURIComponent(term)}`
+        };
+
+        const siteNames = {
+            marktplaats: 'Marktplaats',
+            vinted: 'Vinted',
+            rataplan: 'RataPlan',
+            '2dehands': '2dehands.be',
+            ebay: 'eBay.nl',
+            speurders: 'Speurders',
+            koopplein: 'Koopplein'
+        };
+
+        // Password Check
         function checkPassword() {
             const input = document.getElementById('password-input').value;
             if (input === CORRECT_PASSWORD) {
                 localStorage.setItem('theepot-auth', 'true');
                 document.getElementById('password-overlay').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                loadSubscriptions();
+                document.getElementById('main-app').style.display = 'block';
+                loadMonitors();
             } else {
                 document.getElementById('password-error').style.display = 'block';
                 document.getElementById('password-input').value = '';
             }
         }
 
-        // Check bij laden of al ingelogd
+        function logout() {
+            localStorage.removeItem('theepot-auth');
+            location.reload();
+        }
+
+        // Init auth
         if (localStorage.getItem('theepot-auth') === 'true') {
-            document.getElementById('main-content').style.display = 'block';
+            document.getElementById('main-app').style.display = 'block';
+            loadMonitors();
         } else {
             document.getElementById('password-overlay').style.display = 'flex';
         }
 
-        // Zoek nu - open alle geselecteerde sites in nieuwe tabs
+        // Site Selector
+        function toggleSiteSelector() {
+            const options = document.getElementById('site-options');
+            const toggle = document.querySelector('.site-selector-toggle');
+            options.classList.toggle('show');
+            toggle.classList.toggle('open');
+        }
+
+        // Site option click handlers
+        document.querySelectorAll('.site-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const checkbox = this.querySelector('input');
+                checkbox.checked = !checkbox.checked;
+                this.classList.toggle('selected', checkbox.checked);
+                updateSiteCount();
+            });
+        });
+
+        function updateSiteCount() {
+            const count = document.querySelectorAll('.site-option input:checked').length;
+            document.getElementById('site-count').textContent = count;
+        }
+
+        function getSelectedSites() {
+            return Array.from(document.querySelectorAll('.site-option input:checked')).map(cb => cb.value);
+        }
+
+        // Search Now
         function searchNow() {
-            const term = document.getElementById('quick-search').value.trim();
+            const term = document.getElementById('search-term').value.trim();
             if (!term) {
-                showMessage('Vul een zoekterm in', 'error');
+                showToast('Vul een zoekterm in', 'error');
                 return;
             }
 
-            const checkboxes = document.querySelectorAll('input[name="quick-sites"]:checked');
-            const sites = Array.from(checkboxes).map(cb => cb.value);
+            const sites = getSelectedSites();
+            if (sites.length === 0) {
+                showToast('Selecteer minimaal 1 site', 'error');
+                return;
+            }
+
+            // Generate links
+            const linksHtml = sites.map(site =>
+                `<a href="${siteUrls[site](term)}" target="_blank" class="result-link">${siteNames[site]} →</a>`
+            ).join('');
+
+            document.getElementById('results-label').textContent = `Zoekresultaten voor "${term}":`;
+            document.getElementById('results-links').innerHTML = linksHtml;
+            document.getElementById('search-results').style.display = 'block';
+        }
+
+        // Monitor Modal
+        function openMonitorModal() {
+            const term = document.getElementById('search-term').value.trim();
+            if (!term) {
+                showToast('Vul eerst een zoekterm in', 'error');
+                return;
+            }
+
+            document.getElementById('modal-term').textContent = term;
+
+            // Pre-fill email from localStorage
+            const savedEmail = localStorage.getItem('theepot-email') || '';
+            document.getElementById('modal-email').value = savedEmail;
+
+            document.getElementById('email-modal').classList.add('show');
+        }
+
+        function closeMonitorModal() {
+            document.getElementById('email-modal').classList.remove('show');
+        }
+
+        async function createMonitor() {
+            const term = document.getElementById('search-term').value.trim();
+            const email = document.getElementById('modal-email').value.trim();
+            const sites = getSelectedSites();
+
+            if (!email) {
+                showToast('Vul een email adres in', 'error');
+                return;
+            }
 
             if (sites.length === 0) {
-                showMessage('Selecteer minimaal 1 site', 'error');
-                return;
-            }
-
-            const encodedTerm = encodeURIComponent(term);
-
-            const siteNames = {
-                marktplaats: 'Marktplaats',
-                vinted: 'Vinted',
-                rataplan: 'RataPlan',
-                '2dehands': '2dehands.be',
-                ebay: 'eBay.nl',
-                speurders: 'Speurders',
-                koopplein: 'Koopplein'
-            };
-
-            const urls = {
-                marktplaats: `https://www.marktplaats.nl/q/${encodedTerm}/`,
-                vinted: `https://www.vinted.nl/catalog?search_text=${encodedTerm}`,
-                rataplan: `https://rataplan.com/?s=${encodedTerm}`,
-                '2dehands': `https://www.2dehands.be/q/${encodedTerm}/`,
-                ebay: `https://www.ebay.nl/sch/i.html?_nkw=${encodedTerm}`,
-                speurders: `https://www.speurders.nl/overzicht/${encodedTerm}/`,
-                koopplein: `https://www.koopplein.nl/heel-nederland/zoekopdracht?q=${encodedTerm}`
-            };
-
-            // Genereer links
-            const linksHtml = sites.map(site => {
-                if (urls[site]) {
-                    return `<a href="${urls[site]}" target="_blank" style="
-                        display: inline-block;
-                        background: rgba(79, 195, 247, 0.2);
-                        color: #4fc3f7;
-                        padding: 10px 16px;
-                        border-radius: 8px;
-                        text-decoration: none;
-                        margin: 4px;
-                        border: 1px solid rgba(79, 195, 247, 0.3);
-                        transition: background 0.2s;
-                    " onmouseover="this.style.background='rgba(79, 195, 247, 0.4)'"
-                       onmouseout="this.style.background='rgba(79, 195, 247, 0.2)'">${siteNames[site]}</a>`;
-                }
-                return '';
-            }).join('');
-
-            document.getElementById('search-results').innerHTML = `
-                <p style="color: #a0a0a0; margin-bottom: 10px; font-size: 0.9rem;">Zoekresultaten voor "${term}":</p>
-                <div style="display: flex; flex-wrap: wrap; gap: 4px;">${linksHtml}</div>
-            `;
-        }
-
-        // Toon bericht
-        function showMessage(text, type) {
-            const msgEl = document.getElementById('message');
-            msgEl.textContent = text;
-            msgEl.className = `message ${type}`;
-            msgEl.style.display = 'block';
-            setTimeout(() => {
-                msgEl.style.display = 'none';
-            }, 5000);
-        }
-
-        // Laad subscriptions
-        async function loadSubscriptions() {
-            const container = document.getElementById('subscriptions-container');
-
-            try {
-                const response = await fetch(`${API_URL}/api/subscriptions`);
-
-                if (!response.ok) {
-                    throw new Error('Kan subscriptions niet laden');
-                }
-
-                const data = await response.json();
-
-                if (!data.subscriptions || data.subscriptions.length === 0) {
-                    container.innerHTML = '<p class="empty-state">Nog geen zoekopdrachten. Voeg er een toe!</p>';
-                    return;
-                }
-
-                const html = `
-                    <ul class="subscriptions-list">
-                        ${data.subscriptions.map(sub => `
-                            <li class="subscription-item">
-                                <div class="subscription-info">
-                                    <div class="subscription-term">${escapeHtml(sub.term)}</div>
-                                    <div class="subscription-sites">${sub.sites.join(', ')} &bull; ${escapeHtml(sub.email)}</div>
-                                </div>
-                                <button class="btn-danger" onclick="removeSubscription('${sub.id}')">Verwijderen</button>
-                            </li>
-                        `).join('')}
-                    </ul>
-                `;
-                container.innerHTML = html;
-
-            } catch (error) {
-                container.innerHTML = '<p class="empty-state">Kon niet verbinden met de backend. Is deze geconfigureerd?</p>';
-                console.error('Error loading subscriptions:', error);
-            }
-        }
-
-        // Escape HTML
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // Voeg subscription toe
-        document.getElementById('subscribe-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const term = document.getElementById('term').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const siteCheckboxes = document.querySelectorAll('input[name="sites"]:checked');
-            const sites = Array.from(siteCheckboxes).map(cb => cb.value);
-
-            if (!term || !email || sites.length === 0) {
-                showMessage('Vul alle velden in en selecteer minimaal 1 site', 'error');
+                showToast('Selecteer minimaal 1 site', 'error');
                 return;
             }
 
             try {
                 const response = await fetch(`${API_URL}/api/subscribe`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ term, email, sites }),
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ term, email, sites })
                 });
 
-                const data = await response.json();
-
                 if (response.ok) {
-                    showMessage('Zoekopdracht toegevoegd!', 'success');
-                    document.getElementById('term').value = '';
-                    loadSubscriptions();
+                    localStorage.setItem('theepot-email', email);
+                    showToast('Monitor gestart!', 'success');
+                    closeMonitorModal();
+                    document.getElementById('search-term').value = '';
+                    document.getElementById('search-results').style.display = 'none';
+                    loadMonitors();
                 } else {
-                    showMessage(data.error || 'Er ging iets mis', 'error');
+                    const data = await response.json();
+                    showToast(data.error || 'Er ging iets mis', 'error');
                 }
             } catch (error) {
-                showMessage('Kon niet verbinden met de server', 'error');
-                console.error('Error:', error);
+                showToast('Kon niet verbinden met de server', 'error');
             }
-        });
+        }
 
-        // Verwijder subscription
-        async function removeSubscription(id) {
-            if (!confirm('Weet je zeker dat je deze zoekopdracht wilt verwijderen?')) {
-                return;
+        // Load Monitors
+        async function loadMonitors() {
+            const container = document.getElementById('monitors-list');
+
+            try {
+                const response = await fetch(`${API_URL}/api/subscriptions`);
+                const data = await response.json();
+
+                if (!data.subscriptions || data.subscriptions.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📭</div>
+                            <p>Nog geen monitors actief.<br>Gebruik "Monitor instellen" om te beginnen.</p>
+                        </div>
+                    `;
+                    document.getElementById('monitor-count').textContent = '0';
+                    return;
+                }
+
+                document.getElementById('monitor-count').textContent = data.subscriptions.length;
+
+                container.innerHTML = data.subscriptions.map(sub => `
+                    <div class="monitor-item">
+                        <div class="monitor-info">
+                            <div class="monitor-term">${escapeHtml(sub.term)}</div>
+                            <div class="monitor-meta">${sub.sites.length} sites</div>
+                        </div>
+                        <button class="btn-delete" onclick="deleteMonitor('${sub.id}')" title="Verwijderen">🗑️</button>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                container.innerHTML = '<div class="empty-state">Kon monitors niet laden</div>';
             }
+        }
+
+        async function deleteMonitor(id) {
+            if (!confirm('Monitor verwijderen?')) return;
 
             try {
                 const response = await fetch(`${API_URL}/api/unsubscribe`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id }),
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
                 });
 
                 if (response.ok) {
-                    showMessage('Zoekopdracht verwijderd', 'success');
-                    loadSubscriptions();
-                } else {
-                    const data = await response.json();
-                    showMessage(data.error || 'Er ging iets mis', 'error');
+                    showToast('Monitor verwijderd', 'success');
+                    loadMonitors();
                 }
             } catch (error) {
-                showMessage('Kon niet verbinden met de server', 'error');
-                console.error('Error:', error);
+                showToast('Kon niet verwijderen', 'error');
             }
         }
 
-        // Laad subscriptions bij page load
-        loadSubscriptions();
-
-        // Sla email op in localStorage voor gemak
-        const emailInput = document.getElementById('email');
-        const savedEmail = localStorage.getItem('theepot-email');
-        if (savedEmail) {
-            emailInput.value = savedEmail;
+        // Toast
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
-        emailInput.addEventListener('change', () => {
-            localStorage.setItem('theepot-email', emailInput.value);
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Close modal on outside click
+        document.getElementById('email-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeMonitorModal();
+        });
+
+        // Enter key on search
+        document.getElementById('search-term').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchNow();
         });
     </script>
 </body>
