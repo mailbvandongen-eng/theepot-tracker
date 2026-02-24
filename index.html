@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Theepot Tracker</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -36,7 +37,16 @@
             font-weight: 700;
         }
 
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            color: #4fc3f7;
+        }
+
         .btn-logout {
+            display: flex;
+            align-items: center;
+            gap: 6px;
             background: transparent;
             border: 1px solid rgba(255,255,255,0.2);
             color: #888;
@@ -45,6 +55,11 @@
             cursor: pointer;
             font-size: 0.85rem;
             transition: all 0.2s;
+        }
+
+        .btn-logout i {
+            width: 16px;
+            height: 16px;
         }
 
         .btn-logout:hover {
@@ -139,7 +154,8 @@
             top: 50%;
             transform: translateY(-50%);
             color: #4fc3f7;
-            font-size: 1.2rem;
+            width: 22px;
+            height: 22px;
         }
 
         /* Site Selector */
@@ -172,8 +188,15 @@
             font-weight: 600;
         }
 
+        .site-selector-toggle .toggle-icon {
+            width: 16px;
+            height: 16px;
+        }
+
         .site-selector-toggle .arrow {
             margin-left: auto;
+            width: 18px;
+            height: 18px;
             transition: transform 0.2s;
         }
 
@@ -245,6 +268,11 @@
             gap: 8px;
         }
 
+        .btn i {
+            width: 18px;
+            height: 18px;
+        }
+
         .btn-primary {
             background: linear-gradient(135deg, #4fc3f7 0%, #2196f3 100%);
             color: #fff;
@@ -303,6 +331,11 @@
             transform: translateY(-1px);
         }
 
+        .result-link i {
+            width: 14px;
+            height: 14px;
+        }
+
         /* Monitors Panel */
         .monitors-panel {
             height: fit-content;
@@ -346,11 +379,18 @@
         }
 
         .monitor-term {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-weight: 600;
             margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        }
+
+        .monitor-icon {
+            width: 14px;
+            height: 14px;
+            color: #4fc3f7;
+            flex-shrink: 0;
         }
 
         .monitor-meta {
@@ -366,7 +406,14 @@
             padding: 8px;
             border-radius: 6px;
             transition: all 0.2s;
-            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-delete i {
+            width: 18px;
+            height: 18px;
         }
 
         .btn-delete:hover {
@@ -382,7 +429,8 @@
         }
 
         .empty-state-icon {
-            font-size: 2.5rem;
+            width: 48px;
+            height: 48px;
             margin-bottom: 12px;
             opacity: 0.5;
         }
@@ -512,6 +560,13 @@
             width: 90%;
         }
 
+        .password-logo {
+            width: 56px;
+            height: 56px;
+            color: #4fc3f7;
+            margin-bottom: 16px;
+        }
+
         .password-box h2 {
             margin-bottom: 8px;
         }
@@ -567,6 +622,7 @@
     <!-- Password Overlay -->
     <div class="password-overlay" id="password-overlay">
         <div class="password-box">
+            <i data-lucide="cup-soda" class="password-logo"></i>
             <h2>Theepot Tracker</h2>
             <p>Voer wachtwoord in om toegang te krijgen</p>
             <input type="password" id="password-input" placeholder="Wachtwoord" onkeypress="if(event.key==='Enter')checkPassword()">
@@ -580,10 +636,13 @@
         <!-- Header -->
         <header class="header">
             <div class="logo">
-                <span>🫖</span>
+                <i data-lucide="cup-soda" class="logo-icon"></i>
                 <span>Theepot Tracker</span>
             </div>
-            <button class="btn-logout" onclick="logout()">Uitloggen</button>
+            <button class="btn-logout" onclick="logout()">
+                <i data-lucide="log-out"></i>
+                Uitloggen
+            </button>
         </header>
 
         <!-- Dashboard -->
@@ -594,15 +653,15 @@
 
                 <div class="search-input-wrapper">
                     <input type="text" class="search-input" id="search-term" placeholder="bijv. theepot delfts blauw">
-                    <span class="search-icon">🔍</span>
+                    <i data-lucide="search" class="search-icon"></i>
                 </div>
 
                 <!-- Site Selector -->
                 <div class="site-selector">
                     <button class="site-selector-toggle" onclick="toggleSiteSelector()">
-                        <span>📍</span>
+                        <i data-lucide="map-pin" class="toggle-icon"></i>
                         <span><span class="count" id="site-count">7</span> sites geselecteerd</span>
-                        <span class="arrow">▼</span>
+                        <i data-lucide="chevron-down" class="arrow"></i>
                     </button>
                     <div class="site-options" id="site-options">
                         <label class="site-option selected">
@@ -639,10 +698,12 @@
                 <!-- Action Buttons -->
                 <div class="action-buttons">
                     <button class="btn btn-primary" onclick="searchNow()">
-                        🔍 Zoek nu
+                        <i data-lucide="search"></i>
+                        Zoek nu
                     </button>
                     <button class="btn btn-secondary" onclick="openMonitorModal()">
-                        📧 Monitor instellen
+                        <i data-lucide="bell"></i>
+                        Monitor instellen
                     </button>
                 </div>
 
@@ -661,7 +722,7 @@
                 </div>
                 <div class="monitors-list" id="monitors-list">
                     <div class="empty-state">
-                        <div class="empty-state-icon">📭</div>
+                        <i data-lucide="inbox" class="empty-state-icon"></i>
                         <p>Nog geen monitors actief.<br>Gebruik "Monitor instellen" om te beginnen.</p>
                     </div>
                 </div>
@@ -688,6 +749,9 @@
     <script>
         const API_URL = 'https://backend-eight-phi-18.vercel.app';
         const CORRECT_PASSWORD = 'lindatracker';
+
+        // Initialize Lucide icons
+        lucide.createIcons();
 
         // Site URLs
         const siteUrls = {
@@ -780,12 +844,13 @@
 
             // Generate links
             const linksHtml = sites.map(site =>
-                `<a href="${siteUrls[site](term)}" target="_blank" class="result-link">${siteNames[site]} →</a>`
+                `<a href="${siteUrls[site](term)}" target="_blank" class="result-link">${siteNames[site]} <i data-lucide="external-link"></i></a>`
             ).join('');
 
             document.getElementById('results-label').textContent = `Zoekresultaten voor "${term}":`;
             document.getElementById('results-links').innerHTML = linksHtml;
             document.getElementById('search-results').style.display = 'block';
+            lucide.createIcons();
         }
 
         // Monitor Modal
@@ -858,11 +923,12 @@
                 if (!data.subscriptions || data.subscriptions.length === 0) {
                     container.innerHTML = `
                         <div class="empty-state">
-                            <div class="empty-state-icon">📭</div>
+                            <i data-lucide="inbox" class="empty-state-icon"></i>
                             <p>Nog geen monitors actief.<br>Gebruik "Monitor instellen" om te beginnen.</p>
                         </div>
                     `;
                     document.getElementById('monitor-count').textContent = '0';
+                    lucide.createIcons();
                     return;
                 }
 
@@ -871,12 +937,13 @@
                 container.innerHTML = data.subscriptions.map(sub => `
                     <div class="monitor-item">
                         <div class="monitor-info">
-                            <div class="monitor-term">${escapeHtml(sub.term)}</div>
+                            <div class="monitor-term"><i data-lucide="search" class="monitor-icon"></i>${escapeHtml(sub.term)}</div>
                             <div class="monitor-meta">${sub.sites.length} sites</div>
                         </div>
-                        <button class="btn-delete" onclick="deleteMonitor('${sub.id}')" title="Verwijderen">🗑️</button>
+                        <button class="btn-delete" onclick="deleteMonitor('${sub.id}')" title="Verwijderen"><i data-lucide="trash-2"></i></button>
                     </div>
                 `).join('');
+                lucide.createIcons();
 
             } catch (error) {
                 container.innerHTML = '<div class="empty-state">Kon monitors niet laden</div>';
