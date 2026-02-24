@@ -243,6 +243,48 @@
         <div id="message" class="message" style="display: none;"></div>
 
         <div class="card">
+            <h2>Zoek nu</h2>
+            <div class="form-group">
+                <label for="quick-search">Zoekterm</label>
+                <input type="text" id="quick-search" placeholder="bijv. theepot delfts blauw">
+            </div>
+            <div class="form-group">
+                <label>Zoeken op</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="quick-sites" value="marktplaats" checked>
+                        Marktplaats
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="quick-sites" value="vinted" checked>
+                        Vinted
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="quick-sites" value="rataplan" checked>
+                        RataPlan
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="quick-sites" value="2dehands" checked>
+                        2dehands.be
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="quick-sites" value="ebay" checked>
+                        eBay.nl
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="quick-sites" value="speurders" checked>
+                        Speurders
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="quick-sites" value="koopplein" checked>
+                        Koopplein
+                    </label>
+                </div>
+            </div>
+            <button type="button" class="btn-primary" onclick="searchNow()">Zoek nu</button>
+        </div>
+
+        <div class="card">
             <h2>Nieuwe zoekopdracht</h2>
             <form id="subscribe-form">
                 <div class="form-group">
@@ -308,6 +350,41 @@
     <script>
         // Vercel backend URL
         const API_URL = 'https://backend-eight-phi-18.vercel.app';
+
+        // Zoek nu - open alle geselecteerde sites in nieuwe tabs
+        function searchNow() {
+            const term = document.getElementById('quick-search').value.trim();
+            if (!term) {
+                showMessage('Vul een zoekterm in', 'error');
+                return;
+            }
+
+            const checkboxes = document.querySelectorAll('input[name="quick-sites"]:checked');
+            const sites = Array.from(checkboxes).map(cb => cb.value);
+
+            if (sites.length === 0) {
+                showMessage('Selecteer minimaal 1 site', 'error');
+                return;
+            }
+
+            const encodedTerm = encodeURIComponent(term);
+
+            const urls = {
+                marktplaats: `https://www.marktplaats.nl/q/${encodedTerm}/`,
+                vinted: `https://www.vinted.nl/catalog?search_text=${encodedTerm}`,
+                rataplan: `https://rataplan.com/?s=${encodedTerm}`,
+                '2dehands': `https://www.2dehands.be/q/${encodedTerm}/`,
+                ebay: `https://www.ebay.nl/sch/i.html?_nkw=${encodedTerm}`,
+                speurders: `https://www.speurders.nl/overzicht/${encodedTerm}/`,
+                koopplein: `https://www.koopplein.nl/heel-nederland/zoekopdracht?q=${encodedTerm}`
+            };
+
+            sites.forEach(site => {
+                if (urls[site]) {
+                    window.open(urls[site], '_blank');
+                }
+            });
+        }
 
         // Toon bericht
         function showMessage(text, type) {
